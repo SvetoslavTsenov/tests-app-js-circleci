@@ -31,6 +31,6 @@
   "scripts": {
     "ios": "tns build ios",
     "ios-run": "tns run ios",
-    "e2e": "  mocha --opts ./e2e/config/mocha.opts ",
+    "e2e": "  mocha --opts ./e2e/config/mocha.opts "
   }
 }
