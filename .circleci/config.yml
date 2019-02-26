@@ -49,7 +49,9 @@ jobs:
         command: echo yes | yarn ios
     - run:
         name: Tests
-        command: yarn e2e -- --runType=sim.iPhone7 --verbose=true --ignoreDeviceController=true
+        command: yarn e2e -- --runType=sim.iPhone7 --verbose=true --ignoreDeviceController=false
+    - store_test_results:
+        path: test-results.xml
 workflows:
   version: 2
   build:
