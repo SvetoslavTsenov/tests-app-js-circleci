@@ -59,38 +59,6 @@ jobs:
 
 
 android:
-    docker:
-      - image: circleci/android:api-25-alpha
-    environment:
-      JVM_OPTS: -Xmx3200m
-      YARN: /root/.yarn/bin/yarn
-    steps:
-      - checkout
-      - restore_cache:
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      ## install nvm, node, yarn
-      - run:
-        name: Download Dependencies
-        command: ./gradlew androidDependencies
-      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-      - run: $YARN
-
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-            - node_modules
-
-      - run:
-          name: "Build Android"
-          command: $YARN run android
-
-
-android:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-25-alpha
