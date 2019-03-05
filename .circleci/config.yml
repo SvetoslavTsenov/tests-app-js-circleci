@@ -55,10 +55,7 @@ jobs:
         command: yarn e2e -- --runType=sim.iPhone7 --verbose=true --ignoreDeviceController=false
     - store_test_results:
         path: test-results.xml
-
-
-
-android:
+  android:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-25-alpha
@@ -69,9 +66,6 @@ android:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-#      - run:
-#         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-#         command: sudo chmod +x ./gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
@@ -80,23 +74,17 @@ android:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
       - run: $YARN
-      
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - ~/.cache/yarn
             - node_modules
-
       - run:
           name: "Build Android"
-          command: $YARN run android
-
-
+          command: export ANDROID_HOME=/opt/android/sdk && $YARN run android
 
 workflows:
   version: 2
