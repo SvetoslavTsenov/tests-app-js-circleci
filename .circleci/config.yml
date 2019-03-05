@@ -55,6 +55,7 @@ jobs:
         command: yarn e2e -- --runType=sim.iPhone7 --verbose=true --ignoreDeviceController=false
     - store_test_results:
         path: test-results.xml
+
   android:
     working_directory: ~/code
     docker:
@@ -64,8 +65,10 @@ jobs:
       YARN: /root/.yarn/bin/yarn
     steps:
       - checkout
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  " /build.gradle" }}
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
@@ -73,9 +76,6 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
       - run: $YARN
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
