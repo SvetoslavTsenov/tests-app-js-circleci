@@ -48,6 +48,9 @@ jobs:
         name: Build iOS
         command: echo yes | yarn ios
     - run:
+        name: Build Android
+        command: echo yes | yarn android
+    - run:
         name: Tests
         command: yarn e2e -- --runType=sim.iPhone7 --verbose=true --ignoreDeviceController=false
     - store_test_results:
@@ -57,3 +60,4 @@ workflows:
   build:
     jobs:
     - ios
+    - android

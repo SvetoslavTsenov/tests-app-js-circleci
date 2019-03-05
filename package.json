@@ -31,6 +31,7 @@
   "readme": "NativeScript Application",
   "scripts": {
     "ios": "tns build ios",
+    "android": "tns build android",
     "ios-run": "tns run ios",
     "e2e": "  mocha --opts ./e2e/config/mocha.opts "
   }
