@@ -55,6 +55,34 @@ jobs:
         command: yarn e2e -- --runType=sim.iPhone7 --verbose=true --ignoreDeviceController=false
     - store_test_results:
         path: test-results.xml
+
+
+
+android:
+    docker:
+      - image: scratchy/nativescript-cli
+    environment:
+      YARN: /root/.yarn/bin/yarn
+    steps:
+      - checkout
+
+      ## install nvm, node, yarn
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - run: $YARN
+
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+            - node_modules
+
+      - run:
+          name: "Build Android"
+          command: $YARN run android
 workflows:
   version: 2
   build:
