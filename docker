@@ -1,0 +1,5 @@
+docker run --interactive --tty --rm ^
+    -v //var/run/docker.sock:/var/run/docker.sock ^
+    -v %cd%:/root/.circleci ^
+      circleci/picard circleci build -c /root/.circleci/config.yml
+      #rm -rf  --workdir /%cd%\ ^
